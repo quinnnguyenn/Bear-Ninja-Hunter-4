@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bear Ninja Hunter!</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Bear, Ninja, Hunter</h1>
+        <p>Play against the computer!</p>
+        <ul>
+            <li>The bear beats the hunter!</li>
+            <li>The hunter beats the ninja!</li>
+            <li>The ninja beats the bear!</li>
+        </ul>
+        <p>Click a button to select your choice!</p>
+        <div class="choices">
+            <button onclick="playGame('Bear')">Bear</button>
+            <button onclick="playGame('Ninja')">Ninja</button>
+            <button onclick="playGame('Hunter')">Hunter</button>
+        </div>
+        <div class="result"></div>
+        <button id="playAgainButton" class="hidden" onclick="playAgain()">play again</button>
+    </div>
+    <script>
+        function toForcedCase(input) {
+            return input.charAt(0).toUpperCase() + input.slice(1).toLowerCase();
+        }
+
+
+        let userWinCount = 0;
+        let computerWinCount = 0; 
+
+        function playGame(playerChoice) {
+            const choices = ['Bear', 'Ninja', 'Hunter'];
+            playerChoice = toForcedCase(playerChoice);
+
+            const randomIndex = Math.floor(Math.random() * 3);
+            const computerChoice = choices[randomIndex];
+
+            let outcome;
+            switch (playerChoice + computerChoice) {
+                case 'BearBear':
+                case 'NinjaNinja':
+                case 'HunterHunter':
+                    outcome = 1;
+                    break;
+                case 'BearHunter':
+                case 'NinjaBear':
+                case 'HunterNinja':
+                    outcome = 2;
+                    break;
+                case 'BearNinja':
+                case 'NinjaHunter':
+                case 'HunterBear':
+                    outcome = 3;
+                    break;
+            }
+
+            let message = `You picked ${playerChoice}!\nThe computer picked ${computerChoice}!`;
+
+            if (outcome === 1) {
+                message += "\nIt's a tie!";
+            } else if (outcome === 2) {
+                message += "\nYou win!";
+                userWinCount++;  
+            } else if (outcome === 3) {
+                message += "\nYou lose!";
+                computerWinCount++; 
+            }
+            
+
+            message += `\nTotal Wins: You - ${userWinCount}, Computer - ${computerWinCount}`;  
+            document.querySelector('.result').innerHTML = message.replace(/\n/g, '<br>');
+            document.getElementById('playAgainButton').classList.remove('hidden'); 
+        }
+
+        function playAgain() {
+            location.reload();  
+        }
+    </script>
+</body>
+</html>
